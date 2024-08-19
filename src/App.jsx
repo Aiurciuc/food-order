@@ -1,7 +1,8 @@
 import Meals from "./component/meals/Meals";
 import Header from "./component/header/Header";
 import { useHttpCall } from "./hooks/useHttpCall";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import Cart from "./component/cart/Cart";
 
 function App() {
   const {
@@ -11,20 +12,56 @@ function App() {
   } = useHttpCall("http://localhost:3000/meals");
 
   const [cartItems, setCartItems] = useState({});
+  const dialog = useRef(null);
 
-  const numberOfItems = Object.values(cartItems).reduce((sum, itemNumber) => sum +=itemNumber, 0);
+  const numberOfItems = Object.values(cartItems).reduce(
+    (sum, itemNumber) => (sum += itemNumber.numberOfItems),
+    0
+  );
 
   function handleAddToCart(id) {
-    console.log(id);
     setCartItems((prevState) => {
-      return { ...prevState, [id]: (prevState[id] ?? 0) + 1 };
+      return {
+        ...prevState,
+        [id]: {
+          ...(prevState[id] ?? meals.find((meal) => meal.id === id)),
+          numberOfItems: (prevState[id]?.numberOfItems ?? 0) + 1,
+        },
+      };
     });
-    
+  }
+
+  function handleCartClick() {
+    dialog.current.showModal();
+  }
+
+  function handleQuantityChange(id, numberOfItems) {
+    if (!numberOfItems) {
+      setCartItems((prevState) => {
+        delete prevState[id];
+        return {
+          ...prevState,
+        };
+      });
+    } else {
+      setCartItems((prevState) => ({
+        ...prevState,
+        [id]: {
+          ...prevState[id],
+          numberOfItems,
+        },
+      }));
+    }
   }
 
   return (
     <>
-      <Header numberOfItems={numberOfItems}/>
+      <Header numberOfItems={numberOfItems} handleCartClick={handleCartClick} />
+      <Cart
+        ref={dialog}
+        cartItems={cartItems}
+        onQuantityChange={handleQuantityChange}
+      />
       {!isLoading && (
         <Meals
           meals={meals.map((meal) => ({

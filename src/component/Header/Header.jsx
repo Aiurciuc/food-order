@@ -3,7 +3,7 @@ import Button from "../shared/Button";
 import Logo from "./Logo";
 import Title from "./Title";
 
-export default function Header({numberOfItems}) {
+export default function Header({numberOfItems, handleCartClick}) {
   return (
     <header className="flex justify-between items-center px-2 py-1 bg-slate-900">
       <Title>
@@ -11,7 +11,7 @@ export default function Header({numberOfItems}) {
         Order App
       </Title>
 
-      <Button inverted={true}>Cart ({numberOfItems})</Button>
+      <Button onClick={handleCartClick} inverted={true}>Cart ({numberOfItems})</Button>
     </header>
   );
 }
