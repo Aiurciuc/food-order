@@ -54,6 +54,10 @@ function App() {
     }
   }
 
+  function handleClearCart() {
+    setCartItems({});
+  }
+
   return (
     <>
       <Header numberOfItems={numberOfItems} handleCartClick={handleCartClick} />
@@ -61,6 +65,7 @@ function App() {
         ref={dialog}
         cartItems={cartItems}
         onQuantityChange={handleQuantityChange}
+        onClearCart={handleClearCart}
       />
       {!isLoading && (
         <Meals
