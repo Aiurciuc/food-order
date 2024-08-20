@@ -3,11 +3,11 @@ import Button from "../shared/Button";
 import CloseIcon from "@mui/icons-material/Close";
 
 const ModalRoot = forwardRef(function ModalRoot(props, ref) {
-  // @ts-ignore
+
   const { children, className, ...allProps } = props;
   return (
     <dialog
-      className={`backdrop:bg-gray-50/50 w-2/5 bg-slate-800 text-slate-200 p-4 pb-0 h-2/3 rounded-3xl open:grid grid-rows-12 ${className}`}
+      className={`backdrop:bg-black/50 animate-upTranslate w-2/5 bg-slate-800 text-slate-200 p-4 rounded-3xl open:grid grid-rows-6 ${className}`}
       ref={ref}
       {...allProps}
     >
@@ -29,12 +29,12 @@ function ModalHeader({ title, handleClose }) {
   );
 }
 
-function ModalBody({ children }) {
-  return <section className=" overflow-auto row-span-10">{children}</section>;
+function ModalBody({ children, className }) {
+  return <section className={`overflow-auto row-span-4 ${className}`}>{children}</section>;
 }
 
 function ModalFooter({ children }) {
-  return  <section className="flex justify-end gap-4 py-2 row-span-1">
+  return  <section className="flex justify-end items-center gap-4 py-2 row-span-1">
     {children}
   </section>;
 }
