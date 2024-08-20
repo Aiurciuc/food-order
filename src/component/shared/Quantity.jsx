@@ -3,8 +3,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
-function QuantityRoot({ children }) {
-  return <div className="flex items-center">{children}</div>;
+function QuantityRoot({ children, className }) {
+  return <div className={`${className}`}>{children}</div>;
 }
 
 function QuantityMinus({ onQuantityChange }) {
