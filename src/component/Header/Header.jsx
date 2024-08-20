@@ -1,9 +1,18 @@
 
+import useCartValue from "../../hooks/useCartValue";
 import Button from "../shared/Button";
 import Logo from "./Logo";
 import Title from "./Title";
 
-export default function Header({numberOfItems, handleCartClick}) {
+export default function Header({ handleCartClick}) {
+
+  const {cart}=useCartValue()
+
+  const quantity = Object.values(cart ?? {}).reduce(
+    (sum, itemNumber) => (sum += itemNumber.quantity),
+    0
+  );
+
   return (
     <header className="flex justify-between items-center px-2 py-1 bg-slate-900">
       <Title>
@@ -11,7 +20,7 @@ export default function Header({numberOfItems, handleCartClick}) {
         Order App
       </Title>
 
-      <Button onClick={handleCartClick} inverted={true}>Cart ({numberOfItems})</Button>
+      <Button onClick={handleCartClick} inverted={true}>Cart ({quantity})</Button>
     </header>
   );
 }

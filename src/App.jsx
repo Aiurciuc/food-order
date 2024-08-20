@@ -1,8 +1,10 @@
 import Meals from "./component/meals/Meals";
 import Header from "./component/header/Header";
 import { useHttpCall } from "./hooks/useHttpCall";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Cart from "./component/cart/Cart";
+import CartProvider from "./context/CartContext";
+import useCartValue from "./hooks/useCartValue";
 
 function App() {
   const {
@@ -11,72 +13,25 @@ function App() {
     error,
   } = useHttpCall("http://localhost:3000/meals");
 
-  const [cartItems, setCartItems] = useState({});
   const dialog = useRef(null);
-
-  const numberOfItems = Object.values(cartItems).reduce(
-    (sum, itemNumber) => (sum += itemNumber.numberOfItems),
-    0
-  );
-
-  function handleAddToCart(id) {
-    setCartItems((prevState) => {
-      return {
-        ...prevState,
-        [id]: {
-          ...(prevState[id] ?? meals.find((meal) => meal.id === id)),
-          numberOfItems: (prevState[id]?.numberOfItems ?? 0) + 1,
-        },
-      };
-    });
-  }
 
   function handleCartClick() {
     dialog.current.showModal();
   }
 
-  function handleQuantityChange(id, numberOfItems) {
-    if (!numberOfItems) {
-      setCartItems((prevState) => {
-        delete prevState[id];
-        return {
-          ...prevState,
-        };
-      });
-    } else {
-      setCartItems((prevState) => ({
-        ...prevState,
-        [id]: {
-          ...prevState[id],
-          numberOfItems,
-        },
-      }));
-    }
-  }
-
-  function handleClearCart() {
-    setCartItems({});
-  }
-
   return (
-    <>
-      <Header numberOfItems={numberOfItems} handleCartClick={handleCartClick} />
-      <Cart
-        ref={dialog}
-        cartItems={cartItems}
-        onQuantityChange={handleQuantityChange}
-        onClearCart={handleClearCart}
-      />
+    <CartProvider>
+      <Header handleCartClick={handleCartClick} />
+      <Cart ref={dialog} />
       {!isLoading && (
         <Meals
           meals={meals.map((meal) => ({
             ...meal,
             image: `http://localhost:3000/${meal.image}`,
           }))}
-          onAddToCart={handleAddToCart}
         />
       )}
-    </>
+    </CartProvider>
   );
 }
 

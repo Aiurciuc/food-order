@@ -1,21 +1,23 @@
-import { forwardRef } from "react";
+import { forwardRef, useContext } from "react";
 import Button from "../shared/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Modal } from "../shared/Modal";
 import CartItem from "./CartItem";
+import useCartValue from "../../hooks/useCartValue";
 
-const Cart = forwardRef(function Cart(props, ref) {
+const Cart = forwardRef(function Cart(_, ref) {
+
+  const {cart, handleClearCart} = useCartValue();
+
   function handleClose() {
     ref.current.close();
   }
-  // @ts-ignore
-  const { cartItems, onQuantityChange, onClearCart } = props;
 
-  const total = Object.values(cartItems)
-    .reduce((acc, item) => acc + item.numberOfItems * item.price, 0)
+  const total = Object.values(cart ?? {})
+    .reduce((acc, item) => acc + item.quantity * item.price, 0)
     .toFixed(2);
 
-  const cartIsEmpty = !Object.values(cartItems).length;
+  const cartIsEmpty = !Object.values(cart ?? {}).length;
 
   return (
     <Modal.Root ref={ref}>
@@ -24,8 +26,8 @@ const Cart = forwardRef(function Cart(props, ref) {
         {!cartIsEmpty && (
           <>
             <ul className="my-2">
-              {Object.values(cartItems).map((meal) => (
-                <CartItem meal={meal} key={meal.id} onQuantityChange={onQuantityChange} />
+              {Object.values(cart).map((meal) => (
+                <CartItem meal={meal} key={meal.id} />
               ))}
             </ul>
 
@@ -39,7 +41,7 @@ const Cart = forwardRef(function Cart(props, ref) {
 
       <Modal.Footer>
         <Button disabled={cartIsEmpty}>Continue</Button>
-        <Button disabled={cartIsEmpty} onClick={onClearCart}>
+        <Button disabled={cartIsEmpty} onClick={handleClearCart}>
           Clear <DeleteIcon />
         </Button>
       </Modal.Footer>
