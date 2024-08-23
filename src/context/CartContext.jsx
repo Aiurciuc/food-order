@@ -1,11 +1,18 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { cartReducer } from "../utils/cartReducer";
+import { getLocalStorage, setLocalStorage } from "../utils/localstorage";
 
 export const CartContext = createContext({});
 
 function CartProvider({ children }) {
-  const [cart, dispatch] = useReducer(cartReducer, {});
+  const [cart, dispatch] = useReducer(cartReducer, getLocalStorage('CART') || {} );
 
+  
+  
+  useEffect(() => {
+    setLocalStorage('CART', cart)
+  }, [cart])
+  
   function handleAddToCart(meal) {
     dispatch({ type: "add", meal });
   }

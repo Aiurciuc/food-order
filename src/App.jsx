@@ -4,7 +4,7 @@ import { useHttpCall } from "./hooks/useHttpCall";
 import { useRef } from "react";
 import Cart from "./component/cart/Cart";
 import CartProvider from "./context/CartContext";
-import useCartValue from "./hooks/useCartValue";
+import Checkout from "./component/checkout/Checkout";
 
 function App() {
   const {
@@ -13,16 +13,26 @@ function App() {
     error,
   } = useHttpCall("http://localhost:3000/meals");
 
-  const dialog = useRef(null);
+  const cartRef = useRef(null);
+  const checkoutRef = useRef(null);
+
 
   function handleCartClick() {
-    dialog.current.showModal();
+    cartRef.current.showModal();
   }
+
+  function handleOpenCheckout() {
+    cartRef.current.close();
+    checkoutRef.current.showModal();
+  }
+
 
   return (
     <CartProvider>
       <Header handleCartClick={handleCartClick} />
-      <Cart ref={dialog} />
+      <Cart handleOpenCheckout={handleOpenCheckout} ref={cartRef} />
+      <Checkout ref={checkoutRef} />
+
       {!isLoading && (
         <Meals
           meals={meals.map((meal) => ({

@@ -1,5 +1,10 @@
 export function cartReducer(state, action) {
   switch (action.type) {
+    case "init": {
+      return {
+        ...action.payload,
+      };
+    }
     case "add": {
       return {
         ...state,

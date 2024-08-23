@@ -1,13 +1,14 @@
-import { forwardRef, useContext } from "react";
+import { forwardRef } from "react";
 import Button from "../shared/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Modal } from "../shared/Modal";
 import CartItem from "./CartItem";
 import useCartValue from "../../hooks/useCartValue";
 
-const Cart = forwardRef(function Cart(_, ref) {
+const Cart = forwardRef(function Cart(props, ref) {
+  const { cart, handleClearCart } = useCartValue();
 
-  const {cart, handleClearCart} = useCartValue();
+  const { handleOpenCheckout } = props;
 
   function handleClose() {
     ref.current.close();
@@ -40,7 +41,14 @@ const Cart = forwardRef(function Cart(_, ref) {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button disabled={cartIsEmpty}>Continue</Button>
+        <Button inverted onClick={handleClose}>
+          Close
+        </Button>
+
+        <Button disabled={cartIsEmpty} onClick={handleOpenCheckout}>
+          {" "}
+          Checkout{" "}
+        </Button>
         <Button disabled={cartIsEmpty} onClick={handleClearCart}>
           Clear <DeleteIcon />
         </Button>

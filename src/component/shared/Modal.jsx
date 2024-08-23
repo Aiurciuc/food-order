@@ -22,7 +22,7 @@ function ModalHeader({ title, handleClose }) {
       <h1 className="text-2xl font-semibold tracking-normal uppercase text-yellow-500">
         {title}
       </h1>
-      <Button inverted={true} onClick={handleClose}>
+      <Button inverted={true} type="button" onClick={handleClose}>
         <CloseIcon />
       </Button>
     </section>

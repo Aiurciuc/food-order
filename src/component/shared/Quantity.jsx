@@ -7,30 +7,30 @@ function QuantityRoot({ children, className }) {
   return <div className={`${className}`}>{children}</div>;
 }
 
-function QuantityMinus({ onQuantityChange }) {
+function QuantityMinus({ onQuantityChange, fontSize='medium' }) {
   return (
     <Button className="mx-2" inverted onClick={onQuantityChange}>
-      <RemoveCircleOutlineOutlinedIcon />
+      <RemoveCircleOutlineOutlinedIcon fontSize={fontSize} />
     </Button>
   );
 }
 
-function QuantityPlus({ onQuantityChange }) {
+function QuantityPlus({ onQuantityChange, fontSize='medium' }) {
   return (
     <Button className="mx-2" inverted onClick={onQuantityChange}>
-      <AddCircleOutlineOutlinedIcon />
+      <AddCircleOutlineOutlinedIcon fontSize={fontSize}/>
     </Button>
   );
 }
 
-function QuantityValue({ quantity }) {
-  return <>{quantity}</>;
+function QuantityValue({ quantity, ...props}) {
+  return <span {...props}>{quantity}</span>;
 }
 
-function QuantityReset({ onQuantityChange }) {
+function QuantityReset({ onQuantityChange, fontSize='medium' }) {
   return (
     <Button inverted onClick={onQuantityChange}>
-      <DeleteIcon />
+      <DeleteIcon fontSize={fontSize} />
     </Button>
   );
 }

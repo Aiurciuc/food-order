@@ -2,7 +2,7 @@ import useCartValue from "../../hooks/useCartValue";
 import Button from "../shared/Button";
 import { Quantity } from "../shared/Quantity";
 
-export default function Card({ meal }) {
+export default function MealCard({ meal }) {
   const { cart, handleAddToCart, handleMinusItemCart, handlePlusItemCart, handleRemoveItemCart } =
     useCartValue();
 
@@ -36,10 +36,12 @@ export default function Card({ meal }) {
         {mealAdded && (
           <Quantity.Root className="row-span-2 my-4 p-2 h-10" >
             <Quantity.Minus
+              fontSize="large"
               onQuantityChange={handleMinusCartItem}
             />
-            <Quantity.Value quantity={cart[meal.id].quantity}></Quantity.Value>
+            <Quantity.Value className="text-xl" quantity={cart[meal.id].quantity}></Quantity.Value>
             <Quantity.Plus
+            fontSize="large"
               onQuantityChange={() => handlePlusItemCart(meal.id)}
             />
           </Quantity.Root>
