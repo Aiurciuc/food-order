@@ -23,18 +23,18 @@ export default function MealCard({ meal }) {
         loading="lazy"
         className="object-fit"
       />
-      <div className="p-3 grid grid-rows-7">
-        <h4 className=" text-xl ">{meal.name}</h4>
-        <div className="text-yellow-500 ">{meal.price} $</div>
+      <div className="p-3 grid grid-rows-[repeat(6,55px)]">
+        <h4 className=" text-xl row-span-1">{meal.name}</h4>
+        <div className="text-yellow-500 row-span-1">{meal.price} $</div>
         <p className="mx-4 row-span-3">{meal.description}</p>
         {!mealAdded && (
-          <Button className="row-span-2 my-4 h-10" onClick={() => handleAddToCart(meal)}>
+          <Button className="row-span-1  h-10" onClick={() => handleAddToCart(meal)}>
             Add to cart
           </Button>
         )}
 
         {mealAdded && (
-          <Quantity.Root className="row-span-2 my-4 p-2 h-10" >
+          <Quantity.Root className="row-span-2  p-2 h-10" >
             <Quantity.Minus
               fontSize="large"
               onQuantityChange={handleMinusCartItem}

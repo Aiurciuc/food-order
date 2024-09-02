@@ -46,8 +46,7 @@ const Cart = forwardRef(function Cart(props, ref) {
         </Button>
 
         <Button disabled={cartIsEmpty} onClick={handleOpenCheckout}>
-          {" "}
-          Checkout{" "}
+          Checkout
         </Button>
         <Button disabled={cartIsEmpty} onClick={handleClearCart}>
           Clear <DeleteIcon />

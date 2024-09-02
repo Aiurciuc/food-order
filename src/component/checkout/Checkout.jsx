@@ -1,4 +1,4 @@
-import { forwardRef, useContext } from "react";
+import { forwardRef, useMemo } from "react";
 import { Modal } from "../shared/Modal";
 import useCartValue from "../../hooks/useCartValue";
 import useFormInput from "../../hooks/useFormInput";
@@ -9,6 +9,13 @@ import TextArea from "../shared/TextArea";
 
 const Checkout = forwardRef(function Checkout(_, ref) {
   const { cart } = useCartValue();
+
+  const total = useMemo( () => Object.values(cart ?? {})
+  .reduce((acc, item) => acc + item.quantity * item.price, 0)
+  .toFixed(2),
+  [cart]
+);
+
 
   const {
     value: nameValue,
@@ -101,6 +108,7 @@ const Checkout = forwardRef(function Checkout(_, ref) {
               type="text"
             />
           </div>
+          <span className="text-yellow-500">Total: ${total}</span>
         </Modal.Body>
 
         <Modal.Footer>
