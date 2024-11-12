@@ -1,4 +1,4 @@
-import { forwardRef, useMemo } from "react";
+import { forwardRef, useMemo, useState } from "react";
 import { Modal } from "../shared/Modal";
 import useCartValue from "../../hooks/useCartValue";
 import useFormInput from "../../hooks/useFormInput";
@@ -9,6 +9,7 @@ import TextArea from "../shared/TextArea";
 
 const Checkout = forwardRef(function Checkout(_, ref) {
   const { cart } = useCartValue();
+  const [formError, setFormError] = useState('');
 
   const total = useMemo( () => Object.values(cart ?? {})
   .reduce((acc, item) => acc + item.quantity * item.price, 0)
@@ -46,8 +47,29 @@ const Checkout = forwardRef(function Checkout(_, ref) {
     ref.current.close();
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
+
     event.preventDefault();
+    const formData = new FormData(event.target);
+    const customer = Object.fromEntries(formData.entries());
+    const order = {
+      customer,
+      order: cart
+    }
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const response = await fetch("http://localhost:3000/orders", {
+      method: "POST", 
+      body: JSON.stringify({order}),
+      headers: myHeaders
+    })
+    const data = await response.json();
+    if(response.ok) {
+      ref.current.close();
+    } else {
+      setFormError(data.message);
+    }
+    
   }
 
   const formInvalid = !nameValue || !emailValue || !emailValue.includes("@") || !addressValue || !cityValue;
@@ -109,6 +131,7 @@ const Checkout = forwardRef(function Checkout(_, ref) {
             />
           </div>
           <span className="text-yellow-500">Total: ${total}</span>
+          {formError && <span className="text-red-500">{formError}</span>}
         </Modal.Body>
 
         <Modal.Footer>

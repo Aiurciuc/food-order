@@ -34,7 +34,7 @@ export default function MealCard({ meal }) {
         )}
 
         {mealAdded && (
-          <Quantity.Root className="row-span-2  p-2 h-10" >
+          <Quantity.Root className="row-span-2 h-10" >
             <Quantity.Minus
               fontSize="large"
               onQuantityChange={handleMinusCartItem}
